@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,10 +11,15 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Game extends JFrame{
+public class Game extends JFrame implements Runnable{
 	
 	private GameScreen gameScreen;
 	private BufferedImage image;
+	
+	private final double target_FPS = 120.0;
+	private final double target_UPS = 60.0;
+	
+	private Thread gameThread;
 	
 	public Game(){
 		
@@ -36,9 +40,12 @@ public class Game extends JFrame{
 		this.add(gameScreen);
 		
 		
+		
+		gameThread = new Thread(this);
+		gameThread.start();
+		
 		setVisible(true);
 	}
-	
 	
 	
 	
@@ -46,8 +53,55 @@ public class Game extends JFrame{
 	public static void main(String[] args) {
 		System.out.println("Hi dudes");
 		
-		
 		Game game = new Game();
+	}
+
+	@Override
+	public void run() {
+		double perFrame;
+		long lastFrame = System.nanoTime();
+		
+		double perUpdate;
+		long lastUpdate = System.nanoTime();
+		
+		perFrame = 1000000000.0/target_FPS;
+		perUpdate = 1000000000.0/target_UPS;
+		
+		long lastUpdateFrameTime = System.currentTimeMillis();
+		int frames = 0;
+		int updates = 0;
+		
+		
+		while(true) {
+			
+			//Update
+			if(System.nanoTime() - lastUpdate >= perUpdate) {
+				updateGame();
+				updates++;
+				lastUpdate = System.nanoTime();
+			}
+			
+			//Render
+			if(System.nanoTime() - lastFrame >= perFrame) {
+				repaint();
+				lastFrame = System.nanoTime();
+				frames++;
+			}
+			
+			//Checking UPS & FPS:
+			if(System.currentTimeMillis() - lastUpdateFrameTime >= 1000) {
+				System.out.println("UPS -> " + updates + " | FPS -> " + frames);
+				frames = 0;
+				updates = 0;
+				lastUpdateFrameTime = System.currentTimeMillis();
+			}
+			
+		}
+	}
+	
+	
+	private void updateGame() {
+//		System.out.println("Game Updated!!");
 	}
 }
 
@@ -57,13 +111,12 @@ class GameScreen extends JPanel{
 	private Random randomNum;
 	private BufferedImage img;
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
-	
+
 	public GameScreen(BufferedImage image) {
 		randomNum = new Random();
 		img = image;
 		
 		loadSprites();
-		
 	}
 	
 	private void loadSprites() {
@@ -83,10 +136,10 @@ class GameScreen extends JPanel{
 				g.drawImage(sprites.get(getRandNum()), 32*j, 32*i, null);
 			}
 		}
-
 	}
+	
+
 	private int getRandNum() {
 		return randomNum.nextInt(sprites.size());
 	}
-	
 }
