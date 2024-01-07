@@ -1,11 +1,6 @@
 package main;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.Random;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
@@ -14,9 +9,6 @@ import scenes.Playing;
 import scenes.Settings;
 
 public class Game extends JFrame implements Runnable{
-	
-	private GameScreen gameScreen;
-	
 	private final double target_FPS = 120.0;
 	private final double target_UPS = 60.0;
 	
@@ -26,6 +18,8 @@ public class Game extends JFrame implements Runnable{
 	private MouseInputs mouseInput;
 	
 	
+	//All classes
+	private GameScreen gameScreen;
 	private Render render;
 	private GameMenu menu;
 	private Playing playing;
@@ -35,6 +29,7 @@ public class Game extends JFrame implements Runnable{
 		
 //		setSize(640, 640);                          //Each sprite 32px, so height -> 32 * 20, same is the width
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		this.setTitle("A Good Game");
 		
