@@ -11,11 +11,12 @@ public class MouseInputs implements MouseInputListener, MouseMotionListener{
 	public void mouseClicked(MouseEvent e) {
 		int key = e.getButton();
 		
-		if(key == MouseEvent.BUTTON1) {
-			System.out.println("Left Button Clicked!");
-		}
-		else if(key == MouseEvent.BUTTON3) {
+		if(key == MouseEvent.BUTTON3) {
 			System.out.println("Right Button Clicked!");
+			System.out.println("XCord: " + e.getX() + " : " + e.getY());
+		}
+		else if(key == MouseEvent.BUTTON1) {
+			System.out.println("left Button Clicked!");
 		}
 	}
 

@@ -14,10 +14,6 @@ public class Game extends JFrame implements Runnable{
 	
 	private Thread gameThread;
 	
-	private KeyboardInputs keyInput;
-	private MouseInputs mouseInput;
-	
-	
 	//All classes
 	private GameScreen gameScreen;
 	private Render render;
@@ -38,20 +34,7 @@ public class Game extends JFrame implements Runnable{
 		
 		this.add(gameScreen);
 		
-		//Inputs:
-		keyInput = new KeyboardInputs();
-		mouseInput = new MouseInputs();
-		
-		this.addKeyListener(keyInput);
-		this.addMouseListener(mouseInput);
-		this.addMouseMotionListener(mouseInput);
-		
-		requestFocus();     //-> In Java, requestFocus() is a method that requests that a given component be set to a focused state
-		/*
-		 * As for requestFocus(), this method is used to make the component get input focus. 
-		 * This means that if you press any kind of key or give any input, the input is heard 
-		 * by the respective Listener for that component.
-		 */
+		gameScreen.initInputs();
 		
 		gameThread = new Thread(this);
 		gameThread.start();
