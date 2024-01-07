@@ -9,14 +9,19 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import main.Game;
+
 public class Playing implements SceneMethods{
-	
 	
 	private BufferedImage image;
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
 	private Random randomNum;
 	
-	public Playing() {
+	private Game game;
+	
+	public Playing(Game game) {
+		this.game = game;
+		
 		//Importing sprite-sheet
 				try {
 				   image = ImageIO.read(new File("./res/spriteatlas.png"));
@@ -31,6 +36,9 @@ public class Playing implements SceneMethods{
 
 	@Override
 	public void render(Graphics g) {
+		
+		game.setTitle("Playing");
+		
 		 for(int i=0; i<20; i++) {
 			 for(int j=0; j<20; j++) {
 					g.drawImage(sprites.get(getRandNum()), 32*j, 32*i, null);

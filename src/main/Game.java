@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
+import scenes.GameMenu;
+import scenes.Playing;
+import scenes.Settings;
 
 public class Game extends JFrame implements Runnable{
 	
@@ -22,6 +25,12 @@ public class Game extends JFrame implements Runnable{
 	private KeyboardInputs keyInput;
 	private MouseInputs mouseInput;
 	
+	
+	private Render render;
+	private GameMenu menu;
+	private Playing playing;
+	private Settings settings;
+	
 	public Game(){
 		
 //		setSize(640, 640);                          //Each sprite 32px, so height -> 32 * 20, same is the width
@@ -29,7 +38,8 @@ public class Game extends JFrame implements Runnable{
 		setLocationRelativeTo(null);
 		this.setTitle("A Good Game");
 		
-		gameScreen = new GameScreen();
+		gameScreen = new GameScreen(this);
+		allScenes();
 		
 		this.add(gameScreen);
 		
@@ -53,6 +63,13 @@ public class Game extends JFrame implements Runnable{
 		
 		pack();
 		setVisible(true);
+	}
+	
+	private void allScenes() {
+		render = new Render(this);
+		menu = new GameMenu(this);
+		playing = new Playing(this);
+		settings = new Settings(this);
 	}
 	
 	
@@ -111,23 +128,40 @@ public class Game extends JFrame implements Runnable{
 	private void updateGame() {
 //		System.out.println("Game Updated!!");
 	}
+	
+	//Getters:
+	
+	public Render getRender() {
+		return render;
+	}
+	
+	public GameMenu getGameMenu() {
+		return menu;
+	}
+	
+	public Playing getPlaying() {
+		return playing;
+	}
+	
+	public Settings getSettings() {
+		return settings;
+	}
 }
 
 
 //GameScreen Class
 class GameScreen extends JPanel{
+	private Game game;
+	
 	private Random randomNum;
 	private Dimension scnSize;
 	
-	private Render render;
-
-	public GameScreen() {
+	public GameScreen(Game game) {
+		this.game = game;
 		scnSize = new Dimension(640, 640);   //Each sprite 32px, so height -> 32 * 20, same is the width
 		setMinimumSize(scnSize);
 		setPreferredSize(scnSize);
 		setMaximumSize(scnSize);
-		
-		render = new Render();
 	}
 	
 	
@@ -135,6 +169,6 @@ class GameScreen extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		render.render(g);
+		game.getRender().render(g);
 	}
 }

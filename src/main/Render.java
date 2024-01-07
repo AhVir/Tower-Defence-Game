@@ -7,36 +7,34 @@ import scenes.Playing;
 import scenes.Settings;
 
 public class Render {
+	private Game game;
+	
 	private GameMenu menu;
 	private Playing playing;
 	private Settings settings;
 	
-	public Render() {
-		allScenes();
+	public Render(Game game) {
+		this.game = game;
 	}
 	
-	private void allScenes() {
-		menu = new GameMenu();
-		playing = new Playing();
-		settings = new Settings();
-	}
+	
 	
 	public void render(Graphics g) {
 		
 		switch(GameStates.gameStates) {
 		case MENU:
 			
-			menu.render(g);
+			game.getGameMenu().render(g);
 			
 			break;
 		case SETTINGS:
 			
-			settings.render(g);
+			game.getSettings().render(g);
 			
 			break;
 		case PLAYING:
 
-			playing.render(g);
+			game.getPlaying().render(g);
 
 			break;
 		}
