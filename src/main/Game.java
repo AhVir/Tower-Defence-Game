@@ -18,7 +18,6 @@ import inputs.MouseInputs;
 public class Game extends JFrame implements Runnable{
 	
 	private GameScreen gameScreen;
-	private BufferedImage image;
 	
 	private final double target_FPS = 120.0;
 	private final double target_UPS = 60.0;
@@ -30,19 +29,12 @@ public class Game extends JFrame implements Runnable{
 	
 	public Game(){
 		
-		//Importing sprite-sheet
-		try {
-			image = ImageIO.read(new File("./res/spriteatlas.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 //		setSize(640, 640);                          //Each sprite 32px, so height -> 32 * 20, same is the width
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		this.setTitle("A Good Game");
 		
-		gameScreen = new GameScreen(image);
+		gameScreen = new GameScreen();
 		
 		this.add(gameScreen);
 		
@@ -130,43 +122,24 @@ public class Game extends JFrame implements Runnable{
 //GameScreen Class
 class GameScreen extends JPanel{
 	private Random randomNum;
-	private BufferedImage img;
-	private ArrayList<BufferedImage> sprites = new ArrayList<>();
 	private Dimension scnSize;
+	
+	private Render render;
 
-	public GameScreen(BufferedImage image) {
-		randomNum = new Random();
-		img = image;
-		
+	public GameScreen() {
 		scnSize = new Dimension(640, 640);   //Each sprite 32px, so height -> 32 * 20, same is the width
 		setMinimumSize(scnSize);
 		setPreferredSize(scnSize);
 		setMaximumSize(scnSize);
 		
-		loadSprites();
+		render = new Render();
 	}
 	
-	private void loadSprites() {
-		for(int i=0; i<10; i++) {
-			for(int j=0; j<10; j++) {
-				sprites.add(img.getSubimage(32*j, 32*i, 32, 32));
-			}
-		}
-	}
 	
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		for(int i=0; i<20; i++) {
-			for(int j=0; j<20; j++) {
-				g.drawImage(sprites.get(getRandNum()), 32*j, 32*i, null);
-			}
-		}
-	}
-	
-
-	private int getRandNum() {
-		return randomNum.nextInt(sprites.size());
+		render.render(g);
 	}
 }
