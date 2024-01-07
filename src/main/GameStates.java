@@ -1,4 +1,4 @@
-package inputs;
+package main;
 
 public enum GameStates {
 	MENU, SETTINGS, PLAYING;
