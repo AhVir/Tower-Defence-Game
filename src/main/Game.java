@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,7 +31,7 @@ public class Game extends JFrame implements Runnable{
 			e.printStackTrace();
 		}
 		
-		setSize(640, 640);                          //Each sprite 32px, so height -> 32 * 20, same is the width
+//		setSize(640, 640);                          //Each sprite 32px, so height -> 32 * 20, same is the width
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		this.setTitle("A Good Game");
@@ -44,6 +45,7 @@ public class Game extends JFrame implements Runnable{
 		gameThread = new Thread(this);
 		gameThread.start();
 		
+		pack();
 		setVisible(true);
 	}
 	
@@ -111,10 +113,16 @@ class GameScreen extends JPanel{
 	private Random randomNum;
 	private BufferedImage img;
 	private ArrayList<BufferedImage> sprites = new ArrayList<>();
+	private Dimension scnSize;
 
 	public GameScreen(BufferedImage image) {
 		randomNum = new Random();
 		img = image;
+		
+		scnSize = new Dimension(640, 640);   //Each sprite 32px, so height -> 32 * 20, same is the width
+		setMinimumSize(scnSize);
+		setPreferredSize(scnSize);
+		setMaximumSize(scnSize);
 		
 		loadSprites();
 	}
@@ -131,7 +139,7 @@ class GameScreen extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		for(int i=0; i<19; i++) {
+		for(int i=0; i<20; i++) {
 			for(int j=0; j<20; j++) {
 				g.drawImage(sprites.get(getRandNum()), 32*j, 32*i, null);
 			}
