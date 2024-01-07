@@ -12,6 +12,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import inputs.KeyboardInputs;
+import inputs.MouseInputs;
+
 public class Game extends JFrame implements Runnable{
 	
 	private GameScreen gameScreen;
@@ -21,6 +24,9 @@ public class Game extends JFrame implements Runnable{
 	private final double target_UPS = 60.0;
 	
 	private Thread gameThread;
+	
+	private KeyboardInputs keyInput;
+	private MouseInputs mouseInput;
 	
 	public Game(){
 		
@@ -40,7 +46,15 @@ public class Game extends JFrame implements Runnable{
 		
 		this.add(gameScreen);
 		
+		//Inputs:
+		keyInput = new KeyboardInputs();
+		mouseInput = new MouseInputs();
 		
+		this.addKeyListener(keyInput);
+		this.addMouseListener(mouseInput);
+		this.addMouseMotionListener(mouseInput);
+		
+		requestFocus();
 		
 		gameThread = new Thread(this);
 		gameThread.start();
