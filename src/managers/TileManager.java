@@ -27,8 +27,8 @@ public class TileManager {
 	}
 	
 	private void createTiles() {
-		tiles.add(Grass = new Tile(createSpWaterrite(9, 1)));
-		tiles.add(Water = new Tile(createSprite(6, 0)));
+		tiles.add(Grass = new Tile(createSprite(8, 1)));
+		tiles.add(Water = new Tile(createSprite(0, 6)));
 		tiles.add(Road = new Tile(createSprite(9, 0)));
 	}
 	
@@ -36,4 +36,8 @@ public class TileManager {
 		return image.getSubimage(xCord*32, yCord*32, 32, 32);
 	}
 	
+	//Getter Method:
+	public BufferedImage getSprite(int id) {
+		return tiles.get(id).getTile();
+	}
 }

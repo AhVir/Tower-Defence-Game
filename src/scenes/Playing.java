@@ -1,61 +1,35 @@
 package scenes;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-
+import additional.LevelBuilder;
 import main.Game;
+import managers.TileManager;
 
 public class Playing implements SceneMethods{
 	
-	private BufferedImage image;
-	private ArrayList<BufferedImage> sprites = new ArrayList<>();
 	private Random randomNum;
 	
 	private Game game;
 	
+	private int[][]  level;
+	private TileManager tileManager;
+	
 	public Playing(Game game) {
 		this.game = game;
-		
-		//Importing sprite-sheet
-				try {
-				   image = ImageIO.read(new File("./res/spriteatlas.png"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}		
-				
-				loadSprites();
-				
-				randomNum = new Random();
+		level = LevelBuilder.getLevel();
+		tileManager = new TileManager();
 	}
 
 	@Override
 	public void render(Graphics g) {
-		
 		game.setTitle("Playing");
 		
-		 for(int i=0; i<20; i++) {
-			 for(int j=0; j<20; j++) {
-					g.drawImage(sprites.get(getRandNum()), 32*j, 32*i, null);
-			 }
-		 }
-	}
-	
-	private void loadSprites() {
-		for(int i=0; i<10; i++) {
-			for(int j=0; j<10; j++) {
-				sprites.add(image.getSubimage(32*j, 32*i, 32, 32));
+		for(int x=0; x<20; x++) {
+			for(int y=0; y<20; y++) {
+				g.drawImage(tileManager.getSprite(level[x][y]), y*32, x*32, null);
 			}
 		}
 	}
-	
-	private int getRandNum() {
-		return randomNum.nextInt(sprites.size());
-	}
-
 }
